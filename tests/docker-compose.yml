@@ -33,6 +33,3 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD}
     depends_on:
       - lobsters-db
-
-volumes:
-  db-data:
