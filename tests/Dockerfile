@@ -1,5 +1,4 @@
 FROM ruby:3-slim
-LABEL maintainer="guillaumebriday@gmail.com"
 
 # Set our working directory.
 WORKDIR /lobsters
@@ -17,7 +16,9 @@ ENV RAILS_ENV="production" \
     SMTP_PORT="25" \
     SMTP_STARTTLS_AUTO="true" \
     SMTP_USERNAME="" \
-    SMTP_PASSWORD=""
+    SMTP_PASSWORD="" \
+    SMTP_SENDER="" \
+    LOBSTER_USERNAME=""
 
 RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
 
@@ -45,6 +46,14 @@ RUN git init
 RUN git remote add origin https://github.com/lobsters/lobsters.git
 RUN git pull origin master --depth=1
 
+RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./app/mailers/ban_notification.rb
+RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./app/mailers/application_mailer.rb
+RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
+RUN sed -i "s~#{s.user.username}@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
+
+RUN sed -i "s~:username => \"test\"~:username => \"#{ENV.fetch(\"LOBSTER_USERNAME\", \"\")}\",~g" ./db/seeds.rb
+
+
 # Copy the config in the container
 COPY ./config /lobsters/config
 COPY ./public/ /lobsters/public
@@ -61,4 +70,4 @@ RUN bundle exec rake assets:precompile
 EXPOSE 3000
 
 # # Execute our entry script.
-CMD ["docker-entrypoint.sh"]
+CMD ["/usr/local/bin/docker-entrypoint.sh"]

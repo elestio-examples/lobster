@@ -14,7 +14,8 @@ services:
       - ./db-data:/var/lib/mysql
 
   lobsters:
-    image: elestio4test/lobster:${SOFTWARE_VERSION_TAG}
+    image: elestio/lobster:${SOFTWARE_VERSION_TAG}
+    restart: always
     ports:
       - "3020:3000"
     environment:
@@ -24,11 +25,11 @@ services:
       RAILS_SERVE_STATIC_FILES: "true"
       APP_DOMAIN: ${DOMAIN}
       APP_NAME: ${APP_NAME}
-      SECRET_KEY_BASE: ""
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       X_SENDFILE_HEADER: ""
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}
-      SMTP_STARTTLS_AUTO: "true"
+      SMTP_STARTTLS_AUTO: "false"
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_SENDER: ${SMTP_SENDER}

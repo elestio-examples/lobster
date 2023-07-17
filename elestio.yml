@@ -18,8 +18,8 @@ environments:
     value: "[EMAIL]"
   - key: "DOMAIN"
     value: "[CI_CD_DOMAIN]"
-  - key: "SMTP_SENDER"
-    value: "[DOMAIN]@vm.elestio.app"
+  - key: "LOBSTER_USERNAME"
+    value: "admin"
 
 config:
   runTime: "dockerCompose"
