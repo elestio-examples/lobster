@@ -12,7 +12,6 @@ user.email = "${ADMIN_EMAIL}"
 user.save!
 EOF
 
-docker-compose exec -it lobster-db bash << EOF
-mysql -u root lobster -p${ADMIN_PASSWORD};
-UPDATE users SET username = 'admin' WHERE id = 2;
-EOF
+docker-compose exec -T lobster-db bash -c "mysql -u root -p${ADMIN_PASSWORD} lobster <<EOF 
+UPDATE users SET username = 'admin' WHERE id = 2; 
+EOF";
