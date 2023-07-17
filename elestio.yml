@@ -41,5 +41,5 @@ lifeCycleConfig:
 webUI:
   - url: "https://[CI_CD_DOMAIN]/"
     label: "Lobster Admin"
-    login: "admin"
+    login: "master"
     password: "[ADMIN_PASSWORD]"

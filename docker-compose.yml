@@ -17,7 +17,7 @@ services:
     image: elestio4test/lobster:${SOFTWARE_VERSION_TAG}
     restart: always
     ports:
-      - "3020:3000"
+      - "172.17.0.1:3020:3000"
     environment:
       DATABASE_URL: "mysql2://root:${ADMIN_PASSWORD}@lobster-db:3306/lobster"
       RAILS_ENV: production

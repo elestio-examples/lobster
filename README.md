@@ -13,5 +13,5 @@ Deploy Lobster with CI/CD on Elestio
 You can open Lemmy UI here:
 
     URL: https://[CI_CD_DOMAIN]
-    login: admin
+    login: master
     password: [ADMIN_PASSWORD]

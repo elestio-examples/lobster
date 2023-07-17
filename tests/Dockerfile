@@ -17,8 +17,7 @@ ENV RAILS_ENV="production" \
     SMTP_STARTTLS_AUTO="true" \
     SMTP_USERNAME="" \
     SMTP_PASSWORD="" \
-    SMTP_SENDER="" \
-    LOBSTER_USERNAME=""
+    SMTP_SENDER="" 
 
 RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
 
@@ -50,8 +49,6 @@ RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"
 RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./app/mailers/application_mailer.rb
 RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
 RUN sed -i "s~#{s.user.username}@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
-
-RUN sed -i "s~:username => \"test\"~:username => \"#{ENV.fetch(\"LOBSTER_USERNAME\", \"\")}\"~g" ./db/seeds.rb
 
 
 # Copy the config in the container

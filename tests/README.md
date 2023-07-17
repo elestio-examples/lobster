@@ -10,9 +10,11 @@
 
 A better community platform for the modern web.
 
-[Lobster](https://lobste.rs/)  It is a Rails codebase and uses a SQL (MariaDB in production) backend for the database.
+[Lobster](https://lobste.rs/) It is a Rails codebase and uses a SQL (MariaDB in production) backend for the database.
 
 Deploy a <a target="_blank" href="https://elest.io/open-source/lobster">fully managed Lobster</a> on <a target="_blank" href="https://elest.io/">elest.io</a> if you want automated backups, reverse proxy with SSL termination, firewall, automated OS & Software updates, and a team of Linux experts and open source enthusiasts to ensure your services are always safe, and functional.
+
+<img src="https://github.com/elestio-examples/lobster/raw/main/lobster.png" alt="lobster" width="800">
 
 [![deploy](https://github.com/elestio-examples/lobster/raw/main/deploy-on-elestio.png)](https://dash.elest.io/deploy?source=cicd&social=dockerCompose&url=https://github.com/elestio-examples/lobster)
 
@@ -47,52 +49,70 @@ Run the project with the following command
 
 You can access the Web UI at: `http://your-domain:3020`
 
+The defaults credential for admin will be:
+
+    username: test
+    password: test
+
+Don't forget to change them.
+
 ## Docker-compose
 
 Here are some example snippets to help you get started creating a container.
 
-    version: '3.3'
+    version: "3.3"
 
     services:
-    lobsters-db:
-        image: mysql:5.7
-        environment:
-        - MYSQL_ROOT_PASSWORD: ${ADMIN_PASSWORD}
-        - MYSQL_DATABASE: lobsters
-        volumes:
-        - db-data:/var/lib/mysql
+        lobster-db:
+            image: elestio/mysql:latest
+            restart: always
+            command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max_connections=1000   --gtid-mode=ON --enforce-gtid-consistency=ON
+            environment:
+                MYSQL_ROOT_PASSWORD: ${ADMIN_PASSWORD}
+                MYSQL_DATABASE: lobster
+            ports:
+                - "172.17.0.1:3306:3306"
+            volumes:
+                - ./db-data:/var/lib/mysql
 
-    lobsters:
-        image: elestio4test/lobster:${SOFTWARE_VERSION_TAG}
-        ports:
-        - "3020:3000"
-        environment:
-        - DATABASE_URL: "mysql2://root:${ADMIN_PASSWORD}@lobsters-db:3306/lobsters"
-        - RAILS_ENV: "production"
-        - RACK_ENV: "production"
-        - RAILS_SERVE_STATIC_FILES: "true"
-        - APP_DOMAIN: "${DOMAIN}"
-        - APP_NAME: "${APP_NAME}"
-        - SECRET_KEY_BASE: ""
-        - X_SENDFILE_HEADER: ""
-        - SMTP_HOST: "${SMTP_HOST}"
-        - SMTP_PORT: "${SMTP_PORT}"
-        - SMTP_STARTTLS_AUTO: "true"
-        - SMTP_USERNAME: "${SMTP_USERNAME}"
-        - SMTP_PASSWORD: "${SMTP_PASSWORD}"
-        depends_on:
-        - lobsters-db
-
-    volumes:
-    db-data:
+        lobster:
+            image: elestio4test/lobster:${SOFTWARE_VERSION_TAG}
+            restart: always
+            ports:
+                - "172.17.0.1:3020:3000"
+            environment:
+                DATABASE_URL: "mysql2://root:${ADMIN_PASSWORD}@lobster-db:3306/lobster"
+                RAILS_ENV: production
+                RACK_ENV: production
+                RAILS_SERVE_STATIC_FILES: "true"
+                APP_DOMAIN: ${DOMAIN}
+                APP_NAME: ${APP_NAME}
+                SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+                X_SENDFILE_HEADER: ""
+                SMTP_HOST: ${SMTP_HOST}
+                SMTP_PORT: ${SMTP_PORT}
+                SMTP_STARTTLS_AUTO: "false"
+                SMTP_USERNAME: ${SMTP_USERNAME}
+                SMTP_PASSWORD: ${SMTP_PASSWORD}
+                SMTP_SENDER: ${SMTP_SENDER}
+            depends_on:
+                - lobster-db
 
 ### Environment variables
 
-|       Variable       | Value (example) |
-| :------------------: | :-------------: |
-| SOFTWARE_VERSION_TAG |     latest      |
-|        DOMAIN        |   your.domain   |
-|    ADMIN_PASSWORD    |  your-password  |
+|       Variable       |        Value (example)         |
+| :------------------: | :----------------------------: |
+| SOFTWARE_VERSION_TAG |             latest             |
+|    ADMIN_PASSWORD    |         your-password          |
+|       APP_NAME       |            Lobster             |
+|     ADMIN_EMAIL      |         your@email.com         |
+|        DOMAIN        |          your.domain           |
+|      SMTP_HOST       |           172.17.0.1           |
+|      SMTP_PORT       |               25               |
+|    SMTP_USERNAME     |         user@mail.com          |
+|    SMTP_PASSWORD     |         your-password          |
+|     SMTP_SENDER      |        sender@mail.com         |
+|   SECRET_KEY_BASE    | 128-characters-long-secret-key |
 
 # Maintenance
 
