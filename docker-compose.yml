@@ -14,7 +14,7 @@ services:
       - ./db-data:/var/lib/mysql
 
   lobsters:
-    image: elestio/lobster:${SOFTWARE_VERSION_TAG}
+    image: elestio4test/lobster:${SOFTWARE_VERSION_TAG}
     restart: always
     ports:
       - "3020:3000"

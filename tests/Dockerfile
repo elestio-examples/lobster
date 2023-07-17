@@ -51,7 +51,7 @@ RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"
 RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
 RUN sed -i "s~#{s.user.username}@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
 
-RUN sed -i "s~:username => \"test\"~:username => \"#{ENV.fetch(\"LOBSTER_USERNAME\", \"\")}\",~g" ./db/seeds.rb
+RUN sed -i "s~:username => \"test\"~:username => \"#{ENV.fetch(\"LOBSTER_USERNAME\", \"\")}\"~g" ./db/seeds.rb
 
 
 # Copy the config in the container

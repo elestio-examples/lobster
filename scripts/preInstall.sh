@@ -31,6 +31,7 @@ while IFS= read -r line; do
       IFS=":"
       read -ra array <<< "$value"
       SMTP_HOST=${value#*=}
+      SMTP_HOST=${SMTP_HOST::-3}
       SMTP_PORT=${array[1]}
     fi
   done <<< "$values"

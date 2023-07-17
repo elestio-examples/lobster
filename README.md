@@ -2,9 +2,9 @@
 
 <a href="https://dash.elest.io/deploy?source=cicd&social=dockerCompose&url=https://github.com/elestio-examples/lobster"><img src="deploy-on-elestio.png" alt="Deploy on Elest.io" width="180px" /></a>
 
-Deploy Lemmy server with CI/CD on Elestio
+Deploy Lobster with CI/CD on Elestio
 
-<img src="lemmy.png" style='width: 100%;'/>
+<img src="lobster.png" style='width: 100%;'/>
 <br/>
 <br/>
 
@@ -13,5 +13,5 @@ Deploy Lemmy server with CI/CD on Elestio
 You can open Lemmy UI here:
 
     URL: https://[CI_CD_DOMAIN]
-    email: admin
+    login: admin
     password: [ADMIN_PASSWORD]
