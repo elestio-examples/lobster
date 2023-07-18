@@ -18,9 +18,6 @@ environments:
     value: "[EMAIL]"
   - key: "DOMAIN"
     value: "[CI_CD_DOMAIN]"
-  - key: "LOBSTER_USERNAME"
-    value: "admin"
-
 config:
   runTime: "dockerCompose"
   version: ""
