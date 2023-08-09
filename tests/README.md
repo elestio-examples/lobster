@@ -64,12 +64,12 @@ Here are some example snippets to help you get started creating a container.
 
     services:
         lobster-db:
-            image: elestio/mysql:latest
+            image: elestio/mysql:${SOFTWARE_VERSION_TAG}
             restart: always
-            command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max_connections=1000   --gtid-mode=ON --enforce-gtid-consistency=ON
+            command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max_connections=1000 --gtid-mode=ON --enforce-gtid-consistency=ON
             environment:
-                MYSQL_ROOT_PASSWORD: ${ADMIN_PASSWORD}
-                MYSQL_DATABASE: lobster
+                MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+                MYSQL_DATABASE: ${MYSQL_DATABASE}
             ports:
                 - "172.17.0.1:3306:3306"
             volumes:
@@ -81,17 +81,17 @@ Here are some example snippets to help you get started creating a container.
             ports:
                 - "172.17.0.1:3020:3000"
             environment:
-                DATABASE_URL: "mysql2://root:${ADMIN_PASSWORD}@lobster-db:3306/lobster"
-                RAILS_ENV: production
-                RACK_ENV: production
-                RAILS_SERVE_STATIC_FILES: "true"
-                APP_DOMAIN: ${DOMAIN}
+                DATABASE_URL: ${DATABASE_URL}
+                RAILS_ENV: ${RAILS_ENV}
+                RACK_ENV: ${RAILS_ENV}
+                RAILS_SERVE_STATIC_FILES: ${RAILS_SERVE_STATIC_FILES}
+                APP_DOMAIN: ${APP_DOMAIN}
                 APP_NAME: ${APP_NAME}
                 SECRET_KEY_BASE: ${SECRET_KEY_BASE}
                 X_SENDFILE_HEADER: ""
                 SMTP_HOST: ${SMTP_HOST}
                 SMTP_PORT: ${SMTP_PORT}
-                SMTP_STARTTLS_AUTO: "false"
+                SMTP_STARTTLS_AUTO: ${SMTP_STARTTLS_AUTO}
                 SMTP_USERNAME: ${SMTP_USERNAME}
                 SMTP_PASSWORD: ${SMTP_PASSWORD}
                 SMTP_SENDER: ${SMTP_SENDER}
@@ -100,19 +100,26 @@ Here are some example snippets to help you get started creating a container.
 
 ### Environment variables
 
-|       Variable       |        Value (example)         |
-| :------------------: | :----------------------------: |
-| SOFTWARE_VERSION_TAG |             latest             |
-|    ADMIN_PASSWORD    |         your-password          |
-|       APP_NAME       |            Lobster             |
-|     ADMIN_EMAIL      |         your@email.com         |
-|        DOMAIN        |          your.domain           |
-|      SMTP_HOST       |           172.17.0.1           |
-|      SMTP_PORT       |               25               |
-|    SMTP_USERNAME     |         user@mail.com          |
-|    SMTP_PASSWORD     |         your-password          |
-|     SMTP_SENDER      |        sender@mail.com         |
-|   SECRET_KEY_BASE    | 128-characters-long-secret-key |
+|         Variable         |        Value (example)         |
+| :----------------------: | :----------------------------: |
+|      ADMIN_PASSWORD      |         your-password          |
+|       ADMIN_EMAIL        |         your@email.com         |
+|   SOFTWARE_VERSION_TAG   |             latest             |
+|   MYSQL_ROOT_PASSWORD    |         your-password          |
+|      MYSQL_DATABASE      |            db-name             |
+|       DATABASE_URL       | mysql2://user:password@db-name |
+|        RAILS_ENV         |           production           |
+|         RACK_ENV         |           production           |
+| RAILS_SERVE_STATIC_FILES |              true              |
+|         APP_NAME         |            Lobster             |
+|        APP_DOMAIN        |          your.domain           |
+|        SMTP_HOST         |           smtp.host            |
+|        SMTP_PORT         |               25               |
+|      SMTP_USERNAME       |         user@mail.com          |
+|      SMTP_PASSWORD       |         your-password          |
+|       SMTP_SENDER        |        sender@mail.com         |
+|    SMTP_STARTTLS_AUTO    |              true              |
+|     SECRET_KEY_BASE      | 128-characters-long-secret-key |
 
 # Maintenance
 
