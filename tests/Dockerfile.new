@@ -45,7 +45,7 @@ RUN git init
 RUN git remote add origin https://github.com/lobsters/lobsters.git
 RUN git pull origin master --depth=1
 
-RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./app/mailers/ban_notification.rb
+RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./app/mailers/ban_notification_mailer.rb
 RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./app/mailers/application_mailer.rb
 RUN sed -i "s~nobody@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
 RUN sed -i "s~#{s.user.username}@#{Rails.application.domain}~#{ENV.fetch(\"SMTP_SENDER\", \"\")}~g" ./script/mail_new_activity.rb
